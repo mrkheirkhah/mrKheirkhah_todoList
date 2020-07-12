@@ -1,0 +1,85 @@
+@font-face {
+    font-family: appleSystem;
+    src: url(../fonts/SFPro-Latin/SFProDisplay-Light.ttf);
+}
+
+body {
+    font-family: appleSystem;
+}
+
+#app {
+    height: calc(100vh - 56px);
+    width: 100vw;
+    background-image: url(../src/background-image.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-clip: border-box;
+    overflow: hidden;
+}
+
+.lists_container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.boardTab {
+    position: relative;
+}
+
+.addList_button {
+    position: absolute;
+    top: 15px;
+    right: 13px;
+}
+
+.task-list_wrapper {
+    width: 272px;
+    height: calc(100vh - 215px);
+    background-color: #fff;
+    border-radius: 5px;
+    float: left;
+    margin-right: 10px;
+    padding: 10px 15px;
+}
+
+.task_list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cardContainer {
+    position: relative;
+    margin-bottom: 8px;
+}
+ .task {
+    width: 100%;
+    height: 35px;
+    background-color: #ccc;
+    border-radius: 3px;
+    margin: 0 auto;
+    padding: 2px 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+.cardOptionsButton {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.cardOptionsButton svg {
+    width: 20px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

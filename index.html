@@ -4,25 +4,216 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MrKheirkhah todo-list</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"
-    />
+    <!-- <link rel="stylesheet" href="./css/bootstrap3.css"> -->
+    <link rel="stylesheet" href="./css/bootstrapStyles.css" />
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"
-    ></script>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <svg style="width: 40px; height: 40px;">
+        <use xlink:href="#todo-list_icon"></use>
+      </svg>
+      <b class="text-white mx-3">Todo-list</b>
+      <button
+        class="btn btn-light ml-auto mr-3 font-weight-bold text-secondary"
+      >
+        Add Board
+      </button>
+    </nav>
+    <div class="container-fluid" id="app">
+      <div class="row" id="addBoard_page" hidden>
+        <div class="col-3 mx-auto my-auto py-5 px-3">
+          <form class="add-board">
+            <label for="board_name" class="font-weight-bold text-secondary"
+              >Enter Board Name:</label
+            >
+            <input type="text" id="board_name" class="form-control" />
+            <label
+              for="board_description"
+              class="font-weight-bold text-secondary mt-3"
+              >Enter Board Description:</label
+            >
+            <textarea
+              class="form-control"
+              rows="5"
+              id="board_description"
+            ></textarea>
+            <button class="btn btn-light mt-3 text-secondary font-weight-bold">
+              Add
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="row" id="boards_container">
+        <div class="col-12 mx-auto py-2 px-3">
+          <ul class="nav nav-tabs nav-pills border-0"></ul>
+
+          <div class="tab-content px-1 py-2" id="boardTabs_container">
+            <!-- <div id="home" class="board tab-pane fadein active">
+              <h3 class="text-light font-weight-bolder">AsanBourse Tasks</h3>
+              <p class="text-secondary font-weight-normal">
+                AsanBourse Todo Tasks That I Should Do!!!
+              </p>
+              <button class="addList_button btn btn-light ml-auto mr-3 font-weight-bold text-secondary">add list</button>
+              <div class="lists_container">
+                <div
+                  draggable="true"
+                  ondragstart="dragStart(event)"
+                  ondragover="dragOver(event)"
+                  ondragend="dragEnd()"
+                  class="task-list_wrapper"
+                >
+                  <ul
+                    class="task_list"
+                    ondrop="dropIt(event)"
+                    ondragover="allowDrop(event)"
+                  >       
+                    <li
+                      ondragend="dragEnd()"
+                      ondragover="dragOver(event)"
+                      ondragstart="dragStart(event)"
+                      class="task"
+                      draggable="true"
+                      class="px-2 py-2"
+                    >
+                      you
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+              <h3>Menu 1</h3>
+              <p>
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat.
+              </p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="newListModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add New List</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End modals -->
+    <div hidden>
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <symbol id="todo-list_icon" viewBox="0 0 512 512">
+          <g xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m377 30h-151-150c-8.284 0-15 6.714-15 15v437h165 51.412c14.09 17.457 48.979 30 68.588 30 24.443 0 46-19.991 46-45v-422c0-8.286-6.716-15-15-15z"
+              fill="#f0f7ff"
+            />
+            <path
+              d="m346 512c24.443 0 46-19.991 46-45v-422c0-8.286-6.716-15-15-15h-151v452h51.412c14.09 17.457 48.979 30 68.588 30z"
+              fill="#dfe7f4"
+            />
+            <path
+              d="m482 106h-15-15l-30 15v30l30 15h15 15l30-15v-30z"
+              fill="#613d5c"
+            />
+            <path d="m512 151v-30l-30-15h-15v60h15z" fill="#4b2746" />
+            <path
+              d="m487.156 361h-20.156-21.563l-23.437 15c0 1.5.3 3.3.901 4.799l30 91c1.8 6 7.5 10.201 14.099 10.201s12.299-4.2 14.099-10.201l30-91c.601-1.499.901-3.299.901-4.799z"
+              fill="#ffe1ba"
+            />
+            <path
+              d="m481.099 471.799 30-91c.601-1.499.901-3.299.901-4.799l-24.844-15h-20.156v121c6.599 0 12.299-4.2 14.099-10.201z"
+              fill="#ffbfab"
+            />
+            <path
+              d="m166 181c-3.838 0-7.676-1.465-10.605-4.395l-30-30c-5.859-5.859-5.859-15.352 0-21.211s15.352-5.859 21.211 0l19.394 19.395 19.395-19.395c5.859-5.859 15.352-5.859 21.211 0s5.859 15.352 0 21.211l-30 30c-2.93 2.93-6.768 4.395-10.606 4.395z"
+              fill="#9cdd05"
+            />
+            <path
+              d="m166 271c-3.838 0-7.676-1.465-10.605-4.395l-30-30c-5.859-5.859-5.859-15.352 0-21.211s15.352-5.859 21.211 0l19.394 19.395 19.395-19.395c5.859-5.859 15.352-5.859 21.211 0s5.859 15.352 0 21.211l-30 30c-2.93 2.93-6.768 4.395-10.606 4.395z"
+              fill="#9cdd05"
+            />
+            <path
+              d="m166 361c-3.838 0-7.676-1.465-10.605-4.395l-30-30c-5.859-5.859-5.859-15.352 0-21.211s15.352-5.859 21.211 0l19.394 19.395 19.395-19.395c5.859-5.859 15.352-5.859 21.211 0s5.859 15.352 0 21.211l-30 30c-2.93 2.93-6.768 4.395-10.606 4.395z"
+              fill="#9cdd05"
+            />
+            <path d="m467 151h-45v225h45 45v-225z" fill="#fabe2c" />
+            <path d="m467 151h45v225h-45z" fill="#ff9100" />
+            <path
+              d="m467 61c-24.901 0-45 20.099-45 45v15h45 45v-15c0-24.901-20.099-45-45-45z"
+              fill="#ff641a"
+            />
+            <path d="m512 106c0-24.901-20.099-45-45-45v60h45z" fill="#f03800" />
+            <g fill="#613d5c">
+              <path
+                d="m226 181h90c8.291 0 15-6.709 15-15s-6.709-15-15-15h-90c-8.291 0-15 6.709-15 15s6.709 15 15 15z"
+              />
+              <path
+                d="m316 241h-90c-8.291 0-15 6.709-15 15s6.709 15 15 15h90c8.291 0 15-6.709 15-15s-6.709-15-15-15z"
+              />
+              <path
+                d="m316 331h-90c-8.291 0-15 6.709-15 15s6.709 15 15 15h90c8.291 0 15-6.709 15-15s-6.709-15-15-15z"
+              />
+            </g>
+            <g fill="#4b2746">
+              <path
+                d="m331 166c0-8.291-6.709-15-15-15h-90v30h90c8.291 0 15-6.709 15-15z"
+              />
+              <path
+                d="m331 256c0-8.291-6.709-15-15-15h-90v30h90c8.291 0 15-6.709 15-15z"
+              />
+              <path
+                d="m331 346c0-8.291-6.709-15-15-15h-90v30h90c8.291 0 15-6.709 15-15z"
+              />
+            </g>
+            <path
+              d="m286 0h-60-60c-8.291 0-15 6.709-15 15v30c0 8.291 6.709 15 15 15h60 60c8.291 0 15-6.709 15-15v-30c0-8.291-6.709-15-15-15z"
+              fill="#ff641a"
+            />
+            <path
+              d="m301 45v-30c0-8.291-6.709-15-15-15h-60v60h60c8.291 0 15-6.709 15-15z"
+              fill="#f03800"
+            />
+            <path
+              d="m301 467c0-8.286-6.716-15-15-15h-60-211c-8.284 0-15 6.714-15 15v15c0 16.567 13.431 30 30 30h196 120c-24.901 0-45-20.101-45-45z"
+              fill="#dfe7f4"
+            />
+            <path
+              d="m301 467c0-8.286-6.716-15-15-15h-60v60h120c-24.901 0-45-20.101-45-45z"
+              fill="#c7cfe1"
+            />
+          </g>
+        </symbol>
+        <symbol id="cardMoreSymbol" viewBox="0 0 426.667 426.667">
+          <circle cx="42.667" cy="213.333" r="42.667" />
+          <circle cx="213.333" cy="213.333" r="42.667" />
+          <circle cx="384" cy="213.333" r="42.667" />
+        </symbol>
+      </svg>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="./assests/jQuery.js"></script>
+
+    <!-- Popper JS -->
+    <script src="./assests/popper.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="./assests/bootstrapjs.js"></script>
+
+    <!-- main app js files -->
+    <script src="./JavaScript/common.js"></script>
+    <script src="./JavaScript/dragNdrop.js"></script>
     <script src="./JavaScript/card.js"></script>
     <script src="./JavaScript/list.js"></script>
     <script src="./JavaScript/board.js"></script>
