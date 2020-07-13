@@ -45,6 +45,11 @@ class Card {
 
     $("#cardOptionsModal").on("hidden.bs.modal", () => {
       this.optionsModalIsVisible = false;
+          let optionsModal = document.getElementById("cardOptionsModal");
+          let modalContent = optionsModal.getElementsByClassName(
+            "modal-content"
+          )[0];
+          modalContent.innerHTML = "";
     });
   }
 
@@ -142,11 +147,25 @@ class Card {
     let optionsModal = document.getElementById("cardOptionsModal");
     let modalContent = optionsModal.getElementsByClassName("modal-content")[0];
 
+    modalContent.innerHTML = "";
+
+    let modalHeader = document.createElement("div");
+    modalHeader.classList.add("modal-header");
+    modalHeader.innerHTML = `<h4 class="modal-title">${this.list.title}</h4>
+    <blockquote class="blockquote-footer">${this.list.thisListBoard.title}</blockquote>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>`;
+
+    modalContent.appendChild(modalHeader);
+    
     let modalBody = document.createElement("div");
     modalBody.classList.add("modal-body");
 
     let cardOptionForm = document.createElement("form");
     cardOptionForm.classList.add("was-validated");
+
+    //end
 
     let titleFormGroup = document.createElement("div");
     titleFormGroup.classList.add("form-group");
@@ -160,9 +179,19 @@ class Card {
     titleInput.setAttribute("placeholder", "Title");
     titleInput.value = this.title;
 
-    let inValidFeedback = document.createElement("div");
-    inValidFeedback.classList.add("invalid-feedback");
-    inValidFeedback.innerText = "Type Something";
+    let titleInvalidFeedback = document.createElement("div");
+    titleInvalidFeedback.classList.add("invalid-feedback");
+    titleInvalidFeedback.innerText = "Type Something";
+
+
+    titleFormGroup.appendChild(titleLabel);
+    titleFormGroup.appendChild(titleInput);
+    titleFormGroup.appendChild(titleInvalidFeedback);
+    cardOptionForm.appendChild(titleFormGroup);
+    //end
+
+    let descriptionFormGroup = document.createElement("div");
+    descriptionFormGroup.classList.add("form-group");
 
     let descriptionLabel = document.createElement("label");
     descriptionLabel.innerText = "Description:";
@@ -173,6 +202,20 @@ class Card {
     descriptionInput.value =
       this.description && this.description !== "" ? this.description : "";
 
+    let descriptionInValidFeedback = document.createElement("div");
+    descriptionInValidFeedback.classList.add("invalid-feedback");
+    descriptionInValidFeedback.innerText = "Type Something";
+    
+
+    descriptionFormGroup.appendChild(descriptionLabel);
+    descriptionFormGroup.appendChild(descriptionInput);
+    descriptionFormGroup.appendChild(descriptionInValidFeedback);
+    cardOptionForm.appendChild(descriptionFormGroup);
+    //end
+
+    let dueDateFormGroup = document.createElement("div");
+    dueDateFormGroup.classList.add("form-group");
+
     let dueDateLabel = document.createElement("label");
     dueDateLabel.innerText = "Due Date:";
 
@@ -182,23 +225,38 @@ class Card {
     dueDateInput.value =
       this.dueDate && this.dueDate !== "" ? this.dueDate : null;
     
-    let addCheckListButton = document.createElement("button");
-    addCheckListButton.innerText = "Add CheckList";
-    addCheckListButton.classList.add("addCheckListButton");
-
-    let addCheckListForm = document.createElement("form");
-    addCheckListButton.classList.add("was-validated");
+    dueDateFormGroup.appendChild(dueDateLabel);
+    dueDateFormGroup.appendChild(dueDateInput);
+    cardOptionForm.appendChild(dueDateFormGroup);
     
+    //end
 
+    let optionsModalSaveButton = document.createElement("button");
+    optionsModalSaveButton.setAttribute("type", "submit");
+    optionsModalSaveButton.classList.add("btn", "btn-primary");
+    optionsModalSaveButton.innerText = "Save Options";
 
-
-
-    addCheckListButton.addEventListener("click", () => {
-      let checklist = document.createElement("div");
-      checklist.classList.add("checklist");
-
-
-    });
+    optionsModalSaveButton.onclick = (e) => {
+      e.preventDefault();
+      this.title = titleInput.value;
+      this.description = descriptionInput.value;
+      this.dueDate = dueDateInput.value;
+      this.updateData();
+      this.toggleCardOptionsModal();
+    };
+    cardOptionForm.appendChild(optionsModalSaveButton);
+    //todo checkList
+    // let addCheckListButton = document.createElement("button");
+    // addCheckListButton.innerText = "Add CheckList";
+    // addCheckListButton.classList.add("addCheckListButton");
+    // let addCheckListForm = document.createElement("form");
+    // addCheckListButton.classList.add("was-validated");
+    // addCheckListButton.addEventListener("click", () => {
+    //   let checklist = document.createElement("div");
+    //   checklist.classList.add("checklist");
+    //});
+    modalBody.appendChild(cardOptionForm);
+    modalContent.appendChild(modalBody);
   }
 
   toggleCardOptionsModal() {

@@ -16,6 +16,9 @@ class List {
       this.id = generateNewId();
     }
 
+    // if (cards && typeof cards == "object")
+      // this.cards = cards;
+
     if (board && typeof board == "object") {
       this.thisListBoard = board;
       this.boardListContainer = board.listContainer;
@@ -30,6 +33,13 @@ class List {
     };
 
     this.node = this.makeList();
+    if (cards && cards.length > 0) {
+      let loadedCards = [...cards];
+      for (let card of loadedCards) {
+        this.addCard(card.title, this, null, card);
+      }
+    }
+
   }
 
   makeList() {
@@ -81,7 +91,6 @@ class List {
 
     listNameEditForm.classList.add("was-validated");
     listNameEditForm.onsubmit = (event) => {
-      debugger;
       this.updateTitle(
         titleEditInput,
         listTitle,
@@ -212,16 +221,25 @@ class List {
     }
   }
 
-  addCard(cardName, List, event) {
-    if (event && typeof event == "object") event.preventDefault();
-    let cardObject = {
-      title: cardName,
-      position: this.cards.length + 1,
-    };
-    if ((cardObject && cardName !== "") || (list && list.length !== 0)) {
+  addCard(cardName, List, event, loadCardObject) {
+    let cardObject;
+    if (loadCardObject && typeof loadCardObject == "object") {
+      cardObject = loadCardObject;
       let newCard = new Card(cardObject, this);
       this.cards.push(newCard.data);
+      debugger;
       this.cardContainer.appendChild(newCard.node);
+    } else {
+      if (event && typeof event == "object") event.preventDefault();
+      cardObject = {
+        title: cardName,
+        position: this.cards.length + 1,
+      };
+      if ((cardObject && cardName !== "") || (list && list.length !== 0)) {
+        let newCard = new Card(cardObject, this);
+        this.cards.push(newCard.data);
+        this.cardContainer.appendChild(newCard.node);
+      }
     }
   }
 

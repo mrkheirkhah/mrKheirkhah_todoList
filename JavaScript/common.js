@@ -45,7 +45,6 @@ function insertTargetDataInArray(array, targetElDataId, dataToAdd) {
     array.push(dataToAdd);
   } else {
     let index = array.findIndex((el) => +el.id === +targetElDataId);
-    debugger;
     array.splice(index, 0, dataToAdd);
   }
 }
@@ -63,7 +62,6 @@ function arrangeDataInSameList(
 function inserToAnotherList(listsArray, originListId, destinationListId, draggedElObjectId, afterDraggedElObjectId) {
   let originCardList = listsArray.find((list) => +list.id === +originListId).cards;
   let destinationCardList = listsArray.find((list) => +list.id === +destinationListId).cards;
-  debugger;
   let data = removeTargetCardData(originCardList, draggedElObjectId);
   insertTargetDataInArray(destinationCardList, afterDraggedElObjectId, data[0]);
 }

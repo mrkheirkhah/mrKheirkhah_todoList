@@ -3,8 +3,15 @@ class Board {
 
   lists = [];
 
-  addList(title, description, cardsData, event) {
-    if (title && title !== "" && description && description !== "") {
+  addList(title, description, cardsData, event, id) {
+    if (title && description && cardsData && typeof cardsData == "object") { 
+      let newList = new List(title, description, this, cardsData, id);
+      this.lists.push(newList.data);
+      this.listContainer.appendChild(newList.node);
+    }
+
+
+    if (title && title !== "" && description && description !== "" && !cardsData) {
       let newList = new List(title, description, this);
       this.lists.push(newList.data);
       this.listContainer.appendChild(newList.node);
@@ -155,6 +162,23 @@ class Board {
     console.log(e);
   }
 
+  saveToLocalStorage() {
+    localStorage.setItem("boardListsData", JSON.stringify(this.lists));
+  }
+
+  getSavedData() {
+      let listsData = localStorage.getItem("boardListsData");
+    if (listsData && typeof JSON.parse(listsData) == "object") {
+      this.load(JSON.parse(listsData));
+    }
+}
+
+  load(data) {
+    for (let list of data) { 
+      this.addList(list.title, list.description, list.cards, null, list.id);
+    }
+  }
+
   constructor(title, description, boardContainer, id, lists) {
     if (title && title !== "") this.title = title;
 
@@ -175,6 +199,12 @@ class Board {
       this.isNewListModalVisible = false;
     });
 
+    document.getElementById("saveBoardButton").addEventListener("click", () => {
+      this.saveToLocalStorage();
+    });
+
     this.addBoardTab();
+
+    this.getSavedData();
   }
 }
