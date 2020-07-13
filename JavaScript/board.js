@@ -103,6 +103,7 @@ class Board {
   toggleNewListModal() {
     if (this.isNewListModalVisible) {
       $("#newListModal").modal("hide");
+      this.isNewListModalVisible = false;
     } else {
       $("#newListModal").modal("show");
       this.isNewListModalVisible = true;
@@ -140,9 +141,6 @@ class Board {
 
     let listContainer = document.createElement("div");
     listContainer.classList.add("lists_container");
-    listContainer.setAttribute("drop", (e) => {
-      this.listDroped(e);
-    });
     this.listContainer = listContainer;
 
     boardTab.appendChild(boardTitle);
@@ -172,6 +170,10 @@ class Board {
     } else {
       this.id = generateNewId();
     }
+
+    $("#newListModal").on("hidden.bs.modal", () => {
+      this.isNewListModalVisible = false;
+    });
 
     this.addBoardTab();
   }

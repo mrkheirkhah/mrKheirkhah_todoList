@@ -5,8 +5,6 @@ class List {
 
   cards = [];
 
-  dragAndDrop = new ListDragAndDrop();
-
   constructor(title, description, board, cards, id) {
     if (title && title !== "") this.title = title;
 
@@ -28,7 +26,7 @@ class List {
       description: this.description,
       cards: this.cards,
       id: this.id,
-      position: (this.thisListBoard.lists.length) + 1,
+      position: this.thisListBoard.lists.length + 1,
     };
 
     this.node = this.makeList();
@@ -37,11 +35,17 @@ class List {
   makeList() {
     let listWrapper = document.createElement("div");
     listWrapper.setAttribute("draggable", "true");
-    listWrapper.setAttribute("ondragstart", this.dragAndDrop.dragStart);
-    listWrapper.setAttribute("ondragover", this.dragAndDrop.dragOver);
-    listWrapper.setAttribute("ondragend", this.dragAndDrop.dragEnd);
     listWrapper.classList.add("task-list_wrapper");
-
+    listWrapper.id = this.id;
+    listWrapper.ondragstart = (e) => {
+      listDragAndDrop.dragStart(e, this);
+    };
+    listWrapper.ondragover = (e) => {
+      listDragAndDrop.dragOver(e, this);
+    };
+    listWrapper.ondragend = (e) => {
+      listDragAndDrop.dragEnd(e, this);
+    };
     let listTitleSection = document.createElement("div");
     listTitleSection.classList.add("list-tile_section");
 
@@ -77,6 +81,7 @@ class List {
 
     listNameEditForm.classList.add("was-validated");
     listNameEditForm.onsubmit = (event) => {
+      debugger;
       this.updateTitle(
         titleEditInput,
         listTitle,
@@ -100,8 +105,16 @@ class List {
 
     let list = document.createElement("ul");
     list.classList.add("task_list");
-    // list.setAttribute("ondrop", this.sayHello);
-    // list.setAttribute("ondragover", this.sayHello);
+    list.id = this.id;
+    list.ondragstart = (e) => {
+      listDragAndDrop.dragStart(e, this);
+    };
+    list.ondragover = (e) => {
+      listDragAndDrop.dragOver(e, this);
+    };
+    list.ondragend = (e) => {
+      listDragAndDrop.dragEnd(e, this);
+    };
     this.cardContainer = list;
 
     let addNewCardSection = document.createElement("div");
@@ -123,10 +136,19 @@ class List {
     addNewCardInput.setAttribute("placeholder", "Card Name");
     addNewCardInput.classList.add("form-control");
 
+    let closeAddNewCardForm = document.createElement("button");
+    closeAddNewCardForm.setAttribute("type", "button");
+    closeAddNewCardForm.classList.add("close");
+    closeAddNewCardForm.innerHTML = "&times;";
+    closeAddNewCardForm.onclick = () => {
+      this.toggleAddNewTaskToListInput(addNewTaskButton, addNewCardForm);
+    };
+
     addNewCardForm.classList.add("was-validated");
     addNewCardForm.onsubmit = (event) => {
       this.addCard(addNewCardInput.value, null, event);
       this.toggleAddNewTaskToListInput(addNewTaskButton, addNewCardForm);
+      addNewCardInput.value = "";
     };
 
     addNewTaskButton.addEventListener("click", () => {
@@ -136,13 +158,14 @@ class List {
     addNewCardFormGroup.appendChild(addNewCardInput);
     addNewCardFormGroup.appendChild(inValidFeedback);
     addNewCardForm.appendChild(addNewCardFormGroup);
+    addNewCardForm.appendChild(closeAddNewCardForm);
 
     addNewCardSection.appendChild(addNewTaskButton);
     addNewCardSection.appendChild(addNewCardForm);
 
     listWrapper.appendChild(listTitleSection);
     listWrapper.appendChild(list);
-    listWrapper.appendChild(addNewTaskButton);
+    // listWrapper.appendChild(addNewTaskButton);
     listWrapper.appendChild(addNewCardSection);
 
     return listWrapper;
@@ -157,6 +180,7 @@ class List {
   ) {
     event.preventDefault();
     this.title = newTitleInput.value;
+    this.updateData();
     listTitleContainer.innerText = newTitleInput.value;
     newTitleInput.value = "";
     listNameEditForm.style.display = "none";
@@ -189,11 +213,10 @@ class List {
   }
 
   addCard(cardName, List, event) {
-    debugger;
     if (event && typeof event == "object") event.preventDefault();
     let cardObject = {
       title: cardName,
-      position: (this.cards.length) + 1,
+      position: this.cards.length + 1,
     };
     if ((cardObject && cardName !== "") || (list && list.length !== 0)) {
       let newCard = new Card(cardObject, this);
@@ -202,7 +225,11 @@ class List {
     }
   }
 
-  sayHello() {
-    alert("hello");
+  updateData() {
+    this.data.title = this.title;
+    this.data.description = this.description;
+    this.data.cards = this.cards;
+    this.data.id = this.id;
+    this.data.position = this.thisListBoard.lists.length + 1;
   }
 }
