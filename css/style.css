@@ -60,11 +60,19 @@ body {
     background-color: #f1f1f8;
     border-radius: 3px;
     margin: 0 auto;
-    padding: 2px 10px;
+    padding: 5px 10px !important;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     position: relative;
+}
+
+.cardNameText {
+    width: calc(100% - 25px);
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cardOptionsButton {
@@ -78,12 +86,12 @@ body {
 }
 
 .cardOptionsButton svg {
-    width: 20px;
-    height: auto;
+    width: 70%;
+    height: 70%;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(90deg);
     fill: #bbb
 }
 
@@ -110,4 +118,27 @@ body {
     position: absolute;
     bottom: -1px;
     right: 13px;
+}
+
+.addNewCardSection .close {
+    /* background-color: red; */
+    position: absolute;
+    bottom: -3px;
+    right: 8px;
+}
+
+.toast {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.list-tile_section {
+position: relative;
+}
+
+.list-tile_section .close {
+    position: absolute;
+    bottom: 9px;
+    right: 30px;
 }

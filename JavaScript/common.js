@@ -6,20 +6,20 @@ function insertData(array, draggedElObjectId, afterDraggedElObjectId) {
   if (!afterDraggedElObjectId) {
     let oldIndex = array.findIndex((obj) => obj.id === draggedElObjectId);
     let newIndex = array.length - 1;
-    return moveDataInArray(array, oldIndex, newIndex);
+    return addDataInArray(array, oldIndex, newIndex);
   } else {
     let oldIndex = array.findIndex((obj) => obj.id === draggedElObjectId);
     let newIndex = array.findIndex((obj) => obj.id === afterDraggedElObjectId);
-    return moveDataInArray2(array, oldIndex, newIndex);
+    return moveDataInArray(array, oldIndex, newIndex);
   }
 }
 
-function moveDataInArray(arr, old_index, new_index) {
+function addDataInArray(arr, old_index, new_index) {
   let newEl = arr.splice(old_index, 1)[0];
   return arr.splice(new_index, 0, newEl);
 }
 
-function moveDataInArray2(arr, oldIndex, newIndex) {
+function moveDataInArray(arr, oldIndex, newIndex) {
   if (newIndex > oldIndex) {
     arr.splice(newIndex, 0, arr[oldIndex]);
     arr.splice(oldIndex, 1);

@@ -89,6 +89,14 @@ class List {
     titleEditInput.setAttribute("placeholder", "List Name");
     titleEditInput.classList.add("form-control");
 
+    let listTitleEditHideButton = document.createElement("button");
+    listTitleEditHideButton.classList.add("close");
+    listTitleEditHideButton.setAttribute("type", "buton");
+    listTitleEditHideButton.innerHTML = "&times;";
+    listTitleEditHideButton.onclick = () => {
+      this.toggleListNameEditMode(listNameEditForm, listTitle);
+    }
+
     listNameEditForm.classList.add("was-validated");
     listNameEditForm.onsubmit = (event) => {
       this.updateTitle(
@@ -109,6 +117,7 @@ class List {
     titleEditFormGroup.appendChild(titleEditInput);
     titleEditFormGroup.appendChild(inValidFeedback);
     listNameEditForm.appendChild(titleEditFormGroup);
+    listNameEditForm.appendChild(listTitleEditHideButton);
     listNameEditForm.style.display = "none";
     listTitleSection.appendChild(listNameEditForm);
 

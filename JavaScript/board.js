@@ -4,14 +4,19 @@ class Board {
   lists = [];
 
   addList(title, description, cardsData, event, id) {
-    if (title && description && cardsData && typeof cardsData == "object") { 
+    if (title && description && cardsData && typeof cardsData == "object") {
       let newList = new List(title, description, this, cardsData, id);
       this.lists.push(newList.data);
       this.listContainer.appendChild(newList.node);
     }
 
-
-    if (title && title !== "" && description && description !== "" && !cardsData) {
+    if (
+      title &&
+      title !== "" &&
+      description &&
+      description !== "" &&
+      !cardsData
+    ) {
       let newList = new List(title, description, this);
       this.lists.push(newList.data);
       this.listContainer.appendChild(newList.node);
@@ -48,7 +53,7 @@ class Board {
 
     let titleLabel = document.createElement("label");
     titleLabel.setAttribute("for", `${this.id}-listName`);
-    titleLabel.innerText = "List Name";
+    titleLabel.innerText = "List Name:";
 
     let titleInput = document.createElement("input");
     titleInput.setAttribute("required", true);
@@ -62,7 +67,7 @@ class Board {
 
     let descriptionLabel = document.createElement("label");
     descriptionLabel.setAttribute("for", `${this.id}-listDescription`);
-    descriptionLabel.innerText = "List Description";
+    descriptionLabel.innerText = "List Description:";
 
     let descriptionInput = document.createElement("input");
     descriptionInput.setAttribute("required", true);
@@ -128,7 +133,7 @@ class Board {
     this.titleContainer = boardTitle;
 
     let boardDescription = document.createElement("p");
-    boardDescription.classList.add("text-secondary", "font-weight-normal");
+    boardDescription.classList.add("text-light", "font-weight-normal");
     boardDescription.innerText = this.description;
     this.descriptionContainer = boardDescription;
 
@@ -136,9 +141,9 @@ class Board {
     addBoardButton.classList.add(
       "addList_button",
       "btn",
-      "btn-light",
+      "btn-success",
       "font-weight-bold",
-      "text-secondary"
+      "text-white"
     );
     addBoardButton.innerText = "add new list";
     addBoardButton.onclick = () => {
@@ -164,17 +169,33 @@ class Board {
 
   saveToLocalStorage() {
     localStorage.setItem("boardListsData", JSON.stringify(this.lists));
+    this.showSaveBoardToast();
+  }
+
+  showSaveBoardToast() {
+    let toast = document.getElementById("saveBoard_toast");
+    toast.innerHTML = `<div class="toast-header">
+        <strong class="mr-auto text-primary">Save Board</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+      </div>
+      <div class="toast-body">
+        <mark class="text-info">${this.title}</mark> boards Data Saved
+      </div>`;
+    $(".toast").toast("show");
+    setTimeout(() => {
+      $(".toast").toast("hide");
+    }, 3000);
   }
 
   getSavedData() {
-      let listsData = localStorage.getItem("boardListsData");
+    let listsData = localStorage.getItem("boardListsData");
     if (listsData && typeof JSON.parse(listsData) == "object") {
       this.load(JSON.parse(listsData));
     }
-}
+  }
 
   load(data) {
-    for (let list of data) { 
+    for (let list of data) {
       this.addList(list.title, list.description, list.cards, null, list.id);
     }
   }

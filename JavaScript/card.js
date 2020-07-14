@@ -60,7 +60,11 @@ class Card {
     let card = document.createElement("li");
     card.classList.add("task", "px-2", "py-2");
     card.setAttribute("draggable", "true");
-    card.innerText = cardName;
+    // card.innerText = cardName;
+    card.title = cardName;
+    let span = document.createElement("span");
+    span.classList.add("cardNameText");
+    span.innerText = cardName;
     let editCardNameForm = document.createElement("form");
     editCardNameForm.style.display = "none";
     let editCardNameFormGroup = document.createElement("div");
@@ -77,6 +81,7 @@ class Card {
     editCardNameFormGroup.appendChild(editCardNameInput);
     editCardNameFormGroup.appendChild(inValidFeedback);
     editCardNameForm.appendChild(editCardNameFormGroup);
+    card.appendChild(span);
     cardContainer.appendChild(card);
     cardContainer.appendChild(editCardNameForm);
     let optionsButton = document.createElement("button");
@@ -117,14 +122,14 @@ class Card {
       cardDragAndDrop.dragStart(e, this.list);
     };
 
-    cardContainer.addEventListener(
-      "contextmenu",
-      (e) => {
-        // alert("you tried to open context menu");
-        e.preventDefault();
-      },
-      false
-    );
+    // cardContainer.addEventListener(
+    //   "contextmenu",
+    //   (e) => {
+    //     // alert("you tried to open context menu");
+    //     e.preventDefault();
+    //   },
+    //   false
+    // );
     card.addEventListener("click", (event) => {
       this.toggleCardEditTitleEditInput(card, editCardNameForm);
       optionsButton.style.display = "none";
